@@ -739,6 +739,13 @@
         activeInputId = id;
         document.getElementById('custom-keypad').style.display = "block";
         document.getElementById(id).focus();
+        
+        setTimeout(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }, 50);
     }
 
     function pressKey(key) {
@@ -851,8 +858,7 @@
             let nAns = parseInt(vAns, 10);
 
             if (isCleanLayout) {
-                // 移動専用の正誤判定（項の数が1つであり、かつ「4×6=24」または「6×4=24」の2択）
-                if (userPairs.length === 1 && isAllInputsFilled && nAns === 24) {
+                if (chocoPairsCount === 1 && isAllInputsFilled && nAns === 24) {
                     let p = userPairs[0];
                     if ((p[0] === 4 && p[1] === 6) || (p[0] === 6 && p[1] === 4)) {
                         isValueCorrect = true;
@@ -864,7 +870,6 @@
                 }
                 isAlmostCorrect = false;
             } else {
-                // 従来の囲み判定ロジック（BFS）
                 let visited = Array(5).fill().map(() => Array(6).fill(false));
                 let groups = {}; 
                 let totalLockedChoco = 0;
